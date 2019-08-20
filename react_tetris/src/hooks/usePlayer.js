@@ -25,6 +25,7 @@ export const usePlayer = () => {
     setPlayer(prev => ({ 
       ...prev, // IDK why we have a spread here, or where prev is coming from but OK
       pos: {x: (prev.pos.x += x), y: (prev.pos.y += y)},
+      collided,
     }));
   }
 
