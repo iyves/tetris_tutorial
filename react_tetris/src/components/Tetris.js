@@ -20,7 +20,7 @@ const Tetris = () => {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
 
-  const [player, updatePlayerPos, resetPlayer] = usePlayer();
+  const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
   const [stage, setStage] = useStage(player, resetPlayer);
 
   console.log('re-render');
@@ -66,6 +66,9 @@ const Tetris = () => {
         break;
         case 40: // Down
           dropPlayer();
+        break;
+        case 38: // Up
+          playerRotate(stage, 1);
         break;
       }
     }

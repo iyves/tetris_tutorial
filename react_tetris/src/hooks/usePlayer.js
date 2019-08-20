@@ -37,5 +37,26 @@ export const usePlayer = () => {
     });
   }, []);
 
-  return [player, updatePlayerPos, resetPlayer]; // Q: Why do I have to return player as a list?
+  const rotate = (matrix, dir) => {
+    // Turns rows into cols
+    const rotatedTetro = matrix.map((_, index) => 
+      matrix.map(col => col[index])  
+    );
+    
+    // Rotate clockwise
+    if (dir > 0) return rotatedTetro.map(row => row.reverse());
+    // Rotate counter-clockwise
+    return rotatedTetro.reverse();
+  }
+
+  const playerRotate = (stage, dir) => {
+    const playerCopy = JSON.parse(JSON.stringify(player));
+    playerCopy.tetromino = rotate(playerCopy.tetromino, dir);
+    
+    setPlayer(playerCopy);
+  }
+
+  // Q: Why do I have to return player as a list?
+  // A: I think it has to do with public vs private, whatever you return in the following is public
+  return [player, updatePlayerPos, resetPlayer, playerRotate]; 
 }
