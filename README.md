@@ -13,3 +13,4 @@ yourself:
 - [Jupyter Basics](https://nbviewer.jupyter.org/github/jupyter/notebook/blob/master/docs/source/examples/Notebook/Notebook%20Basics.ipynb)
 - [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) 
 - [ES6 Changes](http://es6-features.org/)
+- [useEffect hook for side effects](https://reactjs.org/docs/hooks-effect.html)
