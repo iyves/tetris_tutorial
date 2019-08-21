@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 
 import { TETROMINOS, randomTetromino } from '../tetrominos';
-import { STAGE_WIDTH } from '../gameHelpers';
+import { STAGE_WIDTH, checkCollision } from '../gameHelpers';
 
 export const usePlayer = () => {
   const [player, setPlayer] = useState({
@@ -42,7 +42,7 @@ export const usePlayer = () => {
     const rotatedTetro = matrix.map((_, index) => 
       matrix.map(col => col[index])  
     );
-    
+ 
     // Rotate clockwise
     if (dir > 0) return rotatedTetro.map(row => row.reverse());
     // Rotate counter-clockwise
@@ -52,7 +52,20 @@ export const usePlayer = () => {
   const playerRotate = (stage, dir) => {
     const playerCopy = JSON.parse(JSON.stringify(player));
     playerCopy.tetromino = rotate(playerCopy.tetromino, dir);
+
+    const pos = playerCopy.pos.x;
+    let offset = 1;
+
+    // If rotation would cause collision, see if moving rotated over would remove collision
+    //  moves rotated tetromino to right and then to left until moving exceeds width of tetromino
+    while (checkCollision(playerCopy, stage, {x: 0, y: 0})) {
+      playerCopy.pos.x += offset;
+      offset = -(offset + (offset > 0 ? 1 : -1));
+      
+      if (offset > playerCopy.tetromino[0].length) return;
+    }
     
+
     setPlayer(playerCopy);
   }
 
