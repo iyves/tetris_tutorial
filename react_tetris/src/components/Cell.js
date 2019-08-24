@@ -7,4 +7,5 @@ const Cell = ({ type }) => (
   <StyledCell type={type} color={TETROMINOS[type].color} />
 )
 
-export default Cell;
+// Memoizes this so that we only refresh cells that move
+export default React.memo(Cell);
