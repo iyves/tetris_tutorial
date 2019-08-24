@@ -4,8 +4,23 @@ import { createStage } from '../gameHelpers';
 
 export const useStage = (player, resetPlayer) => {
   const [stage, setStage] = useState(createStage());
-  
+  const [rowsCleared, setRowsCleared] = useState(0); 
+
   useEffect(() => {
+    setRowsCleared(0);
+  
+    // TODO: Research what reduce and awk does
+    const sweepRows = newStage =>
+      newStage.reduce((ack, row) => {
+        if(row.findIndex(cell => cell[0] === 0) === -1) {
+          setRowsCleared(prev => prev + 1);
+          ack.unshift(new Array(newStage[0].length).fill([0, 'clear']));
+        } else {
+          ack.push(row);
+        }
+        return ack;
+      }, [])
+
     const updateStage = prevStage => {
       // Flush stage
       const newStage = prevStage.map(row =>
@@ -23,9 +38,9 @@ export const useStage = (player, resetPlayer) => {
           }
         })
       })
-      console.log(player); 
       if (player.collided) {
         resetPlayer();
+        return sweepRows(newStage);
       }
 
       return newStage;
@@ -34,5 +49,5 @@ export const useStage = (player, resetPlayer) => {
     setStage(prev => updateStage(prev));
   }, [player, resetPlayer]); // Dependency array
 
-  return [stage, setStage];
+  return [stage, setStage, rowsCleared];
 }
